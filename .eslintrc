@@ -1,0 +1,41 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "extends": "eslint:all",
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "array-bracket-spacing": ["error", "always"],
+    "array-element-newline": ["error", {"ArrayExpression": "consistent"}],
+    "arrow-parens": "off",
+    "computed-property-spacing": ["error", "always"],
+    "function-call-argument-newline": "off",
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "no-console": "off",
+    "no-magic-numbers": "warn",
+    "no-trailing-spaces":"error",
+    "no-undef": 2,
+    "no-unused-expressions": 2,
+    "no-unused-vars": "error",
+    "object-curly-spacing": ["error", "always"],
+    "one-var": "off",
+    "padded-blocks": "off",
+    "quotes": ["error", "single"],
+    "quote-props": "off",
+    "semi": ["error", "never"],
+    "sort-keys": "off",
+    "space-in-parens": ["error", "always"],
+    "strict":"off",
+    "template-curly-spacing": ["error", "always"]
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "process": "readonly",
+    "SharedArrayBuffer": "readonly"
+  }
+}
