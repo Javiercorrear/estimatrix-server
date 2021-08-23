@@ -16,6 +16,12 @@
     "function-call-argument-newline": "off",
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
+    "max-len": ["error", {
+      "code": 140,
+      "ignoreStrings": true,
+      "ignoreTrailingComments": true
+    }],
+    "no-plusplus": "off",
     "no-console": "off",
     "no-magic-numbers": "warn",
     "no-trailing-spaces":"error",
