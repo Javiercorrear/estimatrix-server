@@ -37,11 +37,13 @@
     "sort-keys": "off",
     "space-in-parens": ["error", "always"],
     "strict":"off",
-    "template-curly-spacing": ["error", "always"]
+    "template-curly-spacing": ["error", "always"],
+    "object-property-newline": "off"
   },
   "globals": {
     "Atomics": "readonly",
     "process": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "SharedArrayBuffer": "readonly",
+    "__dirname": "readonly"
   }
 }

@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js" integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <form id="messagesMonitor">
+    <input type="text" name="messageName" placeholder="Informe o nome do evento">
+    <div class="messages"></div>
+    <input type="text" name="messageContent" placeholder="Digite o conteudo da mensagem(JSON) no evento">
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script type="text/javascript">
+    const socket = io( 'http://localhost:3000' )
+
+    const renderMessage = message => {
+      $( '.messages' ).append( `<div class="message"><strong>${ message.name }</strong>: ${ message.content }</div>` )
+    }
+
+    socket.on( 'receivedMessage', message => renderMessage( message ) )
+
+    $( '#messagesMonitor' ).submit( event => {
+      event.preventDefault()
+
+      const messageName = $( 'input[name=messageName]' ).val()
+      const messageContent = $( 'input[name=messageContent]' ).val()
+
+      if ( messageName.length ) {
+
+        let content = {}
+        try {
+          content = JSON.parse( messageContent || '{}' )
+        } catch ( error ) {
+          content = error.message
+          console.error( error.stack )
+        }
+
+        const message = {
+          name: messageName,
+          content,
+        }
+
+        socket.emit( message.name, message )
+      }
+    } )
+  </script>
+</body>
+</html>
