@@ -26,6 +26,8 @@
     }
 
     socket.on( 'receivedMessage', message => renderMessage( message ) )
+    socket.on( 'sendMessage', message => renderMessage( message ) )
+    socket.on( 'error', message => renderMessage( { name: 'error event', content: message } ) )
 
     $( '#messagesMonitor' ).submit( event => {
       event.preventDefault()
@@ -39,7 +41,7 @@
         try {
           content = JSON.parse( messageContent || '{}' )
         } catch ( error ) {
-          content = error.message
+          content = messageContent
           console.error( error.stack )
         }
 

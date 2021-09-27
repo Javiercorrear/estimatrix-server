@@ -12,6 +12,8 @@ const io = require( 'socket.io' )( server, {
   allowEIO3: true
 } )
 
+const { getTestHandler } = require( './src/handlers/testHandler' )
+
 process.env.EVENT_NAME = 'default'
 const PORT = process.env.PORT || 3000
 
@@ -25,7 +27,7 @@ app.use( '/', ( req, res ) => {
 } )
 
 // TO DO: make sure the room is removed after all participants have left the room
-const ROOMS = {}
+const ROOMS = []
 
 const generateId = ( () => {
   let id = 0
@@ -35,35 +37,40 @@ const generateId = ( () => {
 io.on( 'connection', socket => {
   console.log( 'Connected socket: ', socket.id )
 
-  socket.on( 'create_room', ( roomName, username ) => {
+  socket.on( 'create_a_room', ( roomName, username ) => {
+    console.log( roomName )
     const roomId = generateId()
     ROOMS[ roomId ] = {}
-    ROOMS[ roomId ].name = roomName
+    ROOMS[ roomId ].name = roomName.content
     ROOMS[ roomId ].owner = username
+    // ROOMS[ roomId ].name = roomName
+    // ROOMS[ roomId ].owner = username
+
+    console.log( `Room ${ ROOMS[ roomId ].name } with id ${ roomId } created by ${ username }.` )
   } )
 
-  socket.on( 'join_room', ( roomName ) => {
+  //TODO: fix parameter name after testing
+  socket.on( 'join_a_room', ( roomNameObj ) => {
+    const { content: roomName } = roomNameObj
+    console.log( `Trying to locate room ${ roomName }...` )
     const roomExists = ROOMS.find( room => room.name === roomName )
     if ( roomExists ) {
+      console.log( 'Room found. Joining room.' )
       return socket.join( roomName )
     }
-    return socket.emit( 'error', JSON.stringify( { message: 'The room you are trying to access doesn\'t exists' } ) )
+    console.error( 'Room not found.' )
+    return socket.emit( 'error', JSON.stringify( { message: "The room you are trying to access doesn't exists" } ) )
   } )
 
-  socket.on( 'test', data => {
-    console.log( data )
-    try {
-      const content = JSON.stringify( data.content )
-      socket.emit( 'receivedMessage', { ...data, content } )
-    } catch ( error ) {
-      console.error( error.stack )
-      socket.emit( 'receivedMessage', { name: data.name, content: error.message } )
-    }
+  socket.on( 'leave_the_room', ( roomName ) => {
+    console.log( `Leaving room ${ roomName }. Bye!` )
+    socket.leave( roomName )
   } )
 
-  socket.on( 'leave_room', ( roomName ) => {
-    socket.join( roomName )
+  socket.on( 'join-room', room => {
+    console.log( 'ROOM >>>>>>>>>>>>>\n', room )
   } )
+  socket.on( 'test', getTestHandler( socket ) )
 
 } )
 
