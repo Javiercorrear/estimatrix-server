@@ -37,11 +37,14 @@ const generateId = ( () => {
 io.on( 'connection', socket => {
   console.log( 'Connected socket: ', socket.id )
 
-  socket.on( 'create_a_room', ( roomName, username ) => {
-    console.log( roomName )
+  socket.on( 'create_a_room', ( message ) => {
+    const { roomName, username } = message
+    console.log( 'MESSAGE >>>>>>>>> ', message )
+    console.log( 'ROOM NAME >>>>>>>>> ', roomName )
+    console.log( 'USERNAME >>>>>>>>>> ', username )
     const roomId = generateId()
     ROOMS[ roomId ] = {}
-    ROOMS[ roomId ].name = roomName.content
+    ROOMS[ roomId ].name = roomName
     ROOMS[ roomId ].owner = username
     // ROOMS[ roomId ].name = roomName
     // ROOMS[ roomId ].owner = username

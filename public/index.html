@@ -49,8 +49,8 @@
           name: messageName,
           content,
         }
-
-        socket.emit( message.name, message )
+        console.log( 'FRONT MESSAGE NAME >>>>>>>>> ', messageName )
+        return messageName === 'test' ? socket.emit( message.name, message ) : socket.emit( message.name, message.content )
       }
     } )
   </script>
