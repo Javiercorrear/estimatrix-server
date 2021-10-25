@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat</title>
+  <title>Event Tester</title>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js" integrity="sha512-iZIBSs+gDyTH0ZhUem9eQ1t4DcEn2B9lHxfRMeGQhyNdSUz+rb+5A3ummX6DQTOIs1XK0gOteOg/LPtSo9VJ+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -27,7 +27,10 @@
 
     socket.on( 'receivedMessage', message => renderMessage( message ) )
     socket.on( 'sendMessage', message => renderMessage( message ) )
-    socket.on( 'error', message => renderMessage( { name: 'error event', content: message } ) )
+    socket.on( 'error', message => {
+      console.log( message )
+      renderMessage( { name: 'error event', content: JSON.stringify( message ) } )
+    } )
 
     $( '#messagesMonitor' ).submit( event => {
       event.preventDefault()
